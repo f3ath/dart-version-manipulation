@@ -1,5 +1,5 @@
 import 'package:pub_semver/pub_semver.dart';
-import 'package:version_manipulation/version_manipulation.dart';
+import 'package:version_manipulation/version_extension.dart';
 
 void main() {
   print(Version.parse('0.1.3+foo.1').change(major: 2, build: ['moo'])); // 2.1.3+moo
