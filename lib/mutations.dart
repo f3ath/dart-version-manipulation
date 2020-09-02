@@ -56,6 +56,25 @@ class KeepBuild implements VersionMutation {
   final VersionMutation wrapped;
 
   @override
-  Version call(Version version) =>
-      wrapped.call(version).change(build: version.build);
+  Version call(Version version) {
+    final mutated = wrapped.call(version);
+    return Version(mutated.major, mutated.minor, mutated.patch,
+        pre: _join(mutated.preRelease), build: _join(version.build));
+  }
 }
+
+/// A wrapper that keeps original pre-release part
+class KeepPreRelease implements VersionMutation {
+  KeepPreRelease(this.wrapped);
+
+  final VersionMutation wrapped;
+
+  @override
+  Version call(Version version) {
+    final mutated = wrapped.call(version);
+    return Version(mutated.major, mutated.minor, mutated.patch,
+        pre: _join(version.preRelease), build: _join(mutated.build));
+  }
+}
+
+String _join(List elements) => elements.isEmpty ? null : elements.join('.');
