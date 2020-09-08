@@ -65,13 +65,16 @@ class KeepBuild implements VersionMutation {
 
 /// A wrapper that keeps original pre-release part
 class KeepPreRelease implements VersionMutation {
-  KeepPreRelease(this.wrapped);
+  const KeepPreRelease(this.wrapped);
 
   final VersionMutation wrapped;
 
   @override
   Version call(Version version) {
-    final mutated = wrapped.call(version);
+    final versionWithoutPreRelease = Version(
+        version.major, version.minor, version.patch,
+        build: _join(version.build));
+    final mutated = wrapped.call(versionWithoutPreRelease);
     return Version(mutated.major, mutated.minor, mutated.patch,
         pre: _join(version.preRelease), build: _join(mutated.build));
   }
