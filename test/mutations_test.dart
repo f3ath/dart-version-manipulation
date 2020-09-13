@@ -110,6 +110,15 @@ void main() {
         '0.2.3': '0.2.3',
       });
     });
+    test('Chain', () {
+      check(
+          KeepPreRelease(
+              KeepBuild(MutationChain([BumpBreaking(), BumpPatch()]))),
+          {
+            '0.2.3-alpha+foo.1.2.3': '0.3.1-alpha+foo.1.2.3',
+            '0.2.3': '0.3.1',
+          });
+    });
   });
 }
 

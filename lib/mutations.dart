@@ -80,4 +80,22 @@ class KeepPreRelease implements VersionMutation {
   }
 }
 
+/// A chain of mutations applied sequentially
+class MutationChain implements VersionMutation {
+  MutationChain(Iterable<VersionMutation> mutations) {
+    _mutations.addAll(mutations ?? []);
+  }
+
+  final _mutations = <VersionMutation>[];
+
+  @override
+  Version call(Version version) {
+    var v = version;
+    _mutations.forEach((m) {
+      v = m(v);
+    });
+    return v;
+  }
+}
+
 String _join(List elements) => elements.isEmpty ? null : elements.join('.');

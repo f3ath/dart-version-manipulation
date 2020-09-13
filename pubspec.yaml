@@ -1,5 +1,5 @@
 name: version_manipulation
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/f3ath/dart-version-manipulation
 description: Extension on Dart `pub_semver` library. Provides `nextBuild` and `change`.
 environment:
