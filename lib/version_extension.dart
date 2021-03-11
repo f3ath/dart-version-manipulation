@@ -2,18 +2,19 @@ import 'package:pub_semver/pub_semver.dart';
 
 extension VersionManipulation on Version {
   /// Changes the given parts, returning a new instance on [Version]
-  Version change(
-          {int major,
-          int minor,
-          int patch,
-          List<dynamic> build,
-          List<dynamic> preRelease}) =>
+  Version change({
+    int? major,
+    int? minor,
+    int? patch,
+    List<dynamic>? build,
+    List<dynamic>? preRelease,
+  }) =>
       Version(major ?? this.major, minor ?? this.minor, patch ?? this.patch,
           build: _join(build ?? this.build),
           pre: _join(preRelease ?? this.preRelease));
 
-  String _join(List elements) =>
-      elements?.isEmpty == true ? null : elements.join('.');
+  String? _join(List? elements) =>
+      elements?.isEmpty == true ? null : elements!.join('.');
 
   /// Returns a new instance of Version withe the next build:
   /// - empty build will be set to `1`: 1.2.3 -> 1.2.3+1
