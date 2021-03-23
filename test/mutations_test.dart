@@ -18,9 +18,18 @@ void main() {
     });
     test('BumpBuild', () {
       check(BumpBuild(), {
+        '0.2.3': '0.2.3+1',
+        '0.2.3-alpha': '0.2.3-alpha+1',
         '0.2.3-alpha+42': '0.2.3-alpha+43',
         '0.2.3-alpha+foo': '0.2.3-alpha+foo.1',
-        '0.2.3-alpha+foo.42.2': '0.2.3-alpha+foo.43.0',
+        '0.2.3-alpha+foo.42.2': '0.2.3-alpha+foo.42.3',
+      });
+    });
+    test('BumpPreRelease', () {
+      check(BumpPreRelease(), {
+        '0.2.3-42+42': '0.2.3-43',
+        '0.2.3-foo': '0.2.3-foo.1',
+        '0.2.3-foo.42.2': '0.2.3-foo.42.3',
       });
     });
     test('KeepBuild', () {
@@ -40,84 +49,13 @@ void main() {
         '0.2.3-alpha+foo.1.2.3': '0.2.3+foo.1.2.3',
         '0.2.3': '0.2.4',
       });
+      check(KeepBuild(BumpPreRelease()), {
+        '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha.1+foo.1.2.3',
+      });
       check(KeepBuild(BumpBuild()), {
         '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha+foo.1.2.3',
         '0.2.3': '0.2.3',
       });
-    });
-    test('KeepPreRelease', () {
-      check(KeepPreRelease(BumpBreaking()), {
-        '0.2.3-alpha+foo.1.2.3': '0.3.0-alpha',
-        '0.2.3': '0.3.0',
-      });
-      check(KeepPreRelease(BumpMajor()), {
-        '0.2.3-alpha+foo.1.2.3': '1.0.0-alpha',
-        '0.2.3': '1.0.0',
-      });
-      check(KeepPreRelease(BumpMinor()), {
-        '0.2.3-alpha+foo.1.2.3': '0.3.0-alpha',
-        '0.2.3': '0.3.0',
-      });
-      check(KeepPreRelease(BumpPatch()), {
-        '0.2.3-alpha+foo.1.2.3': '0.2.4-alpha',
-        '0.2.3': '0.2.4',
-      });
-      check(KeepPreRelease(BumpBuild()), {
-        '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha+foo.2.0.0',
-        '0.2.3': '0.2.3+1',
-      });
-    });
-    test('KeepPreRelease and KeepBuild', () {
-      check(KeepPreRelease(KeepBuild(BumpBreaking())), {
-        '0.2.3-alpha+foo.1.2.3': '0.3.0-alpha+foo.1.2.3',
-        '0.2.3': '0.3.0',
-      });
-      check(KeepPreRelease(KeepBuild(BumpMajor())), {
-        '0.2.3-alpha+foo.1.2.3': '1.0.0-alpha+foo.1.2.3',
-        '0.2.3': '1.0.0',
-      });
-      check(KeepPreRelease(KeepBuild(BumpMinor())), {
-        '0.2.3-alpha+foo.1.2.3': '0.3.0-alpha+foo.1.2.3',
-        '0.2.3': '0.3.0',
-      });
-      check(KeepPreRelease(KeepBuild(BumpPatch())), {
-        '0.2.3-alpha+foo.1.2.3': '0.2.4-alpha+foo.1.2.3',
-        '0.2.3': '0.2.4',
-      });
-      check(KeepPreRelease(KeepBuild(BumpBuild())), {
-        '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha+foo.1.2.3',
-        '0.2.3': '0.2.3',
-      });
-
-      check(KeepBuild(KeepPreRelease(BumpBreaking())), {
-        '0.2.3-alpha+foo.1.2.3': '0.3.0-alpha+foo.1.2.3',
-        '0.2.3': '0.3.0',
-      });
-      check(KeepBuild(KeepPreRelease(BumpMajor())), {
-        '0.2.3-alpha+foo.1.2.3': '1.0.0-alpha+foo.1.2.3',
-        '0.2.3': '1.0.0',
-      });
-      check(KeepBuild(KeepPreRelease(BumpMinor())), {
-        '0.2.3-alpha+foo.1.2.3': '0.3.0-alpha+foo.1.2.3',
-        '0.2.3': '0.3.0',
-      });
-      check(KeepBuild(KeepPreRelease(BumpPatch())), {
-        '0.2.3-alpha+foo.1.2.3': '0.2.4-alpha+foo.1.2.3',
-        '0.2.3': '0.2.4',
-      });
-      check(KeepBuild(KeepPreRelease(BumpBuild())), {
-        '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha+foo.1.2.3',
-        '0.2.3': '0.2.3',
-      });
-    });
-    test('Chain', () {
-      check(
-          KeepPreRelease(
-              KeepBuild(MutationChain([BumpBreaking(), BumpPatch()]))),
-          {
-            '0.2.3-alpha+foo.1.2.3': '0.3.1-alpha+foo.1.2.3',
-            '0.2.3': '0.3.1',
-          });
     });
   });
 }

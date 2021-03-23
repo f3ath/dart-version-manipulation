@@ -19,19 +19,39 @@ void main() {
             build: ['foo', 'bar', '42']).toString(),
         '42.42.42-gamma.omega+foo.bar.42');
   });
+
   group('Build', () {
-    test('bumping empty build sets it to 1', () {
+    test('empty build will be set to `1`', () {
       expect(Version.parse('1.2.3').nextBuild.toString(), '1.2.3+1');
     });
 
-    test('non-numeric build gets ".1" appended to it', () {
+    test('build with a non-numeric last segment gets `.1` appended', () {
       expect(
           Version.parse('1.2.3+foo42').nextBuild.toString(), '1.2.3+foo42.1');
     });
 
-    test('in a complex build the first numeric part gets incremented', () {
-      expect(Version.parse('1.2.3+foo.1.2.3.bar').nextBuild.toString(),
-          '1.2.3+foo.2.0.0.bar');
+    test('build with a numeric last segment gets the last segment incremented',
+        () {
+      expect(Version.parse('1.2.3+foo.1.2.3').nextBuild.toString(),
+          '1.2.3+foo.1.2.4');
+    });
+  });
+
+  group('Pre-release', () {
+    test('bumping empty pre-release throws an exception', () {
+      expect(() => Version.parse('1.2.3').nextPreRelease, throwsStateError);
+    });
+
+    test('pre-release with a non-numeric last segment gets `.1` appended', () {
+      expect(Version.parse('1.2.3-foo42').nextPreRelease.toString(),
+          '1.2.3-foo42.1');
+    });
+
+    test(
+        'pre-release with a numeric last segment gets the last segment incremented',
+        () {
+      expect(Version.parse('1.2.3-foo.1.2.3').nextPreRelease.toString(),
+          '1.2.3-foo.1.2.4');
     });
   });
 }
