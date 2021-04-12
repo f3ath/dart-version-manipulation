@@ -9,6 +9,17 @@ abstract class VersionMutation {
   Version call(Version version);
 }
 
+/// A mutation sequence
+class Sequence implements VersionMutation {
+  Sequence(this.mutations);
+
+  final Iterable<VersionMutation> mutations;
+
+  @override
+  Version call(Version version) => mutations.fold(
+      version, (previousValue, element) => element(previousValue));
+}
+
 /// Bumps the breaking version
 class BumpBreaking implements VersionMutation {
   const BumpBreaking();
@@ -49,12 +60,32 @@ class BumpBuild implements VersionMutation {
   Version call(Version version) => version.nextBuild;
 }
 
+/// Sets the build version
+class SetBuild implements VersionMutation {
+  const SetBuild(this.value);
+
+  final String value;
+
+  @override
+  Version call(Version version) => version.change(build: value.split('.'));
+}
+
 /// Bumps the pre-release version
 class BumpPreRelease implements VersionMutation {
   const BumpPreRelease();
 
   @override
   Version call(Version version) => version.nextPreRelease;
+}
+
+/// Sets the pre-release version
+class SetPreRelease implements VersionMutation {
+  const SetPreRelease(this.value);
+
+  final String value;
+
+  @override
+  Version call(Version version) => version.change(preRelease: value.split('.'));
 }
 
 /// A wrapper that keeps the original build

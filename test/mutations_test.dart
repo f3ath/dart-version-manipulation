@@ -16,6 +16,16 @@ void main() {
     test('BumpPatch', () {
       check(BumpPatch(), {'0.2.3-alpha+42': '0.2.3'});
     });
+    test('SetBuild', () {
+      check(SetBuild('foo'), {'0.2.3-alpha+42': '0.2.3-alpha+foo'});
+    });
+    test('SetPreRelease', () {
+      check(SetPreRelease('foo'), {'0.2.3-alpha+42': '0.2.3-foo+42'});
+    });
+    test('Sequence', () {
+      check(Sequence([SetPreRelease('foo'), SetBuild('bar')]),
+          {'0.2.3-alpha+42': '0.2.3-foo+bar'});
+    });
     test('BumpBuild', () {
       check(BumpBuild(), {
         '0.2.3': '0.2.3+1',
