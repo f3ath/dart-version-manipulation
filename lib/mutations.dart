@@ -78,6 +78,14 @@ class BumpPreRelease implements VersionMutation {
   Version call(Version version) => version.nextPreRelease;
 }
 
+/// Promotes a pre-release to a release keeping the main version
+class Release implements VersionMutation {
+  const Release();
+
+  @override
+  Version call(Version version) => version.release;
+}
+
 /// Sets the pre-release version
 class SetPreRelease implements VersionMutation {
   const SetPreRelease(this.value);

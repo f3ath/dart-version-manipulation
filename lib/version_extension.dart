@@ -30,6 +30,13 @@ extension VersionManipulation on Version {
     if (preRelease.isEmpty) throw StateError('Can not bump empty pre-release');
     return change(preRelease: preRelease.next, build: []);
   }
+
+  /// Promotes a pre-release to a release by clearing the pre-release and the build
+  /// - empty pre-release can not be promoted. Throws a [StateError]
+  Version get release {
+    if (preRelease.isEmpty) throw StateError('Not a pre-release');
+    return change(preRelease: [], build: []);
+  }
 }
 
 extension _List on List {
@@ -44,5 +51,6 @@ extension _List on List {
 
   String? get asString {
     if (isNotEmpty) return join('.');
+    return null;
   }
 }

@@ -16,6 +16,12 @@ void main() {
     test('BumpPatch', () {
       check(BumpPatch(), {'0.2.3-alpha+42': '0.2.3'});
     });
+    test('Release', () {
+      check(Release(), {'0.2.3-alpha+42': '0.2.3'});
+    });
+    test('Release throws when not a pre-release', () {
+      expect(() => Release()(Version.parse('1.2.3')), throwsStateError);
+    });
     test('SetBuild', () {
       check(SetBuild('foo'), {'0.2.3-alpha+42': '0.2.3-alpha+foo'});
     });
@@ -61,6 +67,9 @@ void main() {
       });
       check(KeepBuild(BumpPreRelease()), {
         '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha.1+foo.1.2.3',
+      });
+      check(KeepBuild(Release()), {
+        '0.2.3-alpha+foo.1.2.3': '0.2.3+foo.1.2.3',
       });
       check(KeepBuild(BumpBuild()), {
         '0.2.3-alpha+foo.1.2.3': '0.2.3-alpha+foo.1.2.3',
