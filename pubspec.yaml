@@ -4,7 +4,7 @@ homepage: https://github.com/f3ath/dart-version-manipulation
 description: Extension on Dart `pub_semver` library. Provides `nextBuild`, `nextPreRelease` and `change`.
 
 environment:
-  sdk: '>=2.12.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   pub_semver: ^2.0.0

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.2] - 2023-09-15
 ### Changed
-- Allow SDK v3
+- Bump SDK to v3.0.0
 
 ## [0.1.1] - 2022-12-07
 ### Added
