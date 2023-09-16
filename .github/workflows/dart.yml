@@ -4,26 +4,22 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     container:
       image:  dart:stable
-
     steps:
       - uses: actions/checkout@v2
+      - name: Print Dart version
+        run: dart --version
       - name: Install dependencies
-        run: pub get
-      - name: Format
+        run: dart pub get
+      - name: Formatter
         run: dart format --output none --set-exit-if-changed example lib test
       - name: Analyzer
         run: dart analyze --fatal-infos --fatal-warnings
-      - name: Clean coverage
-        run: rm -rf .coverage
       - name: Tests
         run: dart test --coverage=.coverage
       - name: Coverage
