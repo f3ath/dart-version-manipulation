@@ -49,8 +49,5 @@ extension _List on List {
     return [...this, '1'];
   }
 
-  String? get asString {
-    if (isNotEmpty) return join('.');
-    return null;
-  }
+  String? get asString => isNotEmpty ? join('.') : null;
 }
